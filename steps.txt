@@ -1,0 +1,7 @@
+npm pg
+npm express
+
+task
+user/admin singin , signup
+user can add feedback on product or check all products which add previously
+admin can edit delete view feedbacks of perticular user
