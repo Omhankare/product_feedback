@@ -9,8 +9,8 @@ function App() {
     <>
       <Login />
       <Register />
-      <Feedback />
-      <AdminDashboard />
+      {/* <Feedback /> */}
+      {/* <AdminDashboard /> */}
     </>
   );
 }

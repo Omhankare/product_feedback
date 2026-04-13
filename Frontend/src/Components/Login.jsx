@@ -1,30 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 
 function Login() {
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // after submit form state loss thats why use preventDefault to stop default browser behaviour
+
+    try {
+      const res = await fetch("http://localhost:8080/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <section className="bg-gray-50 dark:bg-gray-100">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0  ">
+          <div className="w-full shadow-2xl bg-white rounded-lg   md:mt-0 sm:max-w-md xl:p-0 ">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
                 Sign in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label
-                    htmlFor="email"
+                    htmlFor="username"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
-                    Your email
+                    Your username
                   </label>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
+                    type="text"
+                    name="username"
+                    id="username"
                     className="bg-gray-50 border border-gray-300 text-black rounded-lg focus:ring-white focus:border-white block w-full p-2.5 dark:bg-white dark:placeholder-gray-400 dark:text-black  "
-                    placeholder="name@gmail.com"
-                    required=""
+                    placeholder="Enter your username"
+                    required
+                    onChange={handleChange}
+                    value={form.username}
                   />
                 </div>
                 <div>
@@ -40,7 +72,9 @@ function Login() {
                     id="password"
                     placeholder="••••••"
                     className="bg-gray-50 border border-gray-300 text-black rounded-lg focus:ring-white focus:border-white block w-full p-2.5 dark:bg-white dark:placeholder-gray-400 dark:text-black  "
-                    required=""
+                    required
+                    onChange={handleChange}
+                    value={form.password}
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -51,7 +85,6 @@ function Login() {
                         aria-describedby="remember"
                         type="checkbox"
                         className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600  dark:ring-offset-gray-800"
-                        required=""
                       />
                     </div>
                     <div className="ml-3 text-sm">
@@ -77,9 +110,9 @@ function Login() {
                   Sign in
                 </button>
                 <p className="text-sm font-light text-gray-700 dark:text-gray-700">
-                  Don’t have an account yet?{" "}
+                  Don't have an account yet?{" "}
                   <a
-                    href="#"
+                    href="/signup"
                     className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                   >
                     Sign up
